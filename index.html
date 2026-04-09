@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>노담노술 - 금연·금주 도전기</title>
+
+    <meta property="og:title" content="노담노술 - 금연·금주 도전기">
+    <meta property="og:description" content="완벽한 금연, 금주를 위한 나만의 타이머와 회복 도감! 같이 건강해지자!">
+    <meta property="og:image" content="https://wowleo74.github.io/NoC-NoA/icon.png">
+    <meta property="og:url" content="https://wowleo74.github.io/NoC-NoA/">
+
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
+    <link rel="stylesheet" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/toss/tossface/dist/tossface.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .premium-reduce-board {
+            background: linear-gradient(135deg, #10B981 0%, #065F46 100%);
+            border-radius: 20px; padding: 24px; color: white; margin-top: 15px;
+            box-shadow: 0 10px 28px rgba(16, 185, 129, 0.3); position: relative; overflow: hidden; display: none;
+        }
+        .premium-reduce-board.drink { background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%); box-shadow: 0 10px 28px rgba(59, 130, 246, 0.3); }
+        .premium-reduce-board.fail { background: linear-gradient(135deg, #595959 0%, #3a3a3a 100%); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+        
+        .pr-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .pr-title { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+        .pr-target-badge { background: rgba(255, 255, 255, 0.25); padding: 5px 12px; border-radius: 12px; font-size: 12px; font-weight: 800; }
+        .pr-body { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+        .pr-number-wrap { display: flex; flex-direction: column; align-items: flex-start; }
+        .pr-number { font-size: 64px; font-weight: 900; line-height: 1; letter-spacing: -2px; }
+        .pr-unit { font-size: 20px; font-weight: 700; margin-left: 4px; }
+        .pr-used-badge { background: rgba(0, 0, 0, 0.15); padding: 5px 12px; border-radius: 12px; font-size: 13px; font-weight: 700; margin-top: 8px; }
+        .pr-icon-wrap { width: 75px; height: 75px; border-radius: 50%; background: rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.3); font-size: 36px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .pr-message { background: rgba(255, 255, 255, 0.2); padding: 12px 16px; border-radius: 14px; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; justify-content: center; width: 100%; box-sizing: border-box; overflow: hidden; }
+        .pr-progress-wrap { width: 100%; }
+        .pr-progress-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; margin-bottom: 10px; opacity: 0.9; }
+        .pr-bar-container { display: flex; gap: 4px; height: 12px; width: 100%; }
+        .pr-bar-segment { flex: 1; background: rgba(255, 255, 255, 0.25); border-radius: 4px; transition: background 0.3s ease; }
+        .pr-bar-segment.filled { background: white; box-shadow: 0 0 8px rgba(255,255,255,0.4); }
+        .pr-bar-smooth { width: 100%; height: 12px; background: rgba(255, 255, 255, 0.25); border-radius: 6px; overflow: hidden; }
+        .pr-bar-smooth-fill { height: 100%; background: white; box-shadow: 0 0 8px rgba(255,255,255,0.4); transition: width 0.4s ease; border-radius: 6px; }
+
+        .premium-quit-board {
+            background: linear-gradient(135deg, #10B981 0%, #065F46 100%);
+            border-radius: 20px; padding: 24px; color: white; margin-top: 15px;
+            box-shadow: 0 10px 28px rgba(16, 185, 129, 0.3); position: relative; overflow: hidden; display: none;
+        }
+        .premium-quit-board.drink {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+            box-shadow: 0 10px 28px rgba(59, 130, 246, 0.3);
+        }
+        .premium-quit-board.fail {
+            background: linear-gradient(135deg, #595959 0%, #3a3a3a 100%);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .pq-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .pq-title { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+        .pq-body { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+        .pq-number-wrap { display: flex; flex-direction: column; align-items: flex-start; }
+        .pq-number { font-size: 64px; font-weight: 900; line-height: 1; letter-spacing: -2px; }
+        .pq-number.fail { color: #FFD166; } 
+        .pq-unit { font-size: 20px; font-weight: 700; margin-left: 4px; }
+        .pq-icon-wrap { width: 75px; height: 75px; border-radius: 50%; background: rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.3); font-size: 36px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        .pq-money-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 0px; width: 100%; }
+        .pq-money-box { background: rgba(255, 255, 255, 0.2); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; align-items: flex-start; width: 100%; box-sizing: border-box; }
+        .pq-money-label { font-size: 13px; font-weight: 700; opacity: 0.9; margin-bottom: 4px; }
+        .pq-money-value { font-size: 24px; font-weight: 800; display: flex; align-items: baseline; width: 100%; overflow: hidden; }
+        .pq-money-value .unit { font-size: 14px; font-weight: 600; margin-left: 4px; }
+
+        .fit-text { white-space: nowrap !important; display: inline-block !important; }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-nav" id="mainNav">
+        <div class="tab-group" id="tabGroup">
+            <button class="nav-btn active" id="tabSmoke">🚬 금연</button>
+            <button class="nav-btn" id="tabDrink">🍺 금주</button>
+        </div>
+        <div class="action-group">
+            <button class="action-btn" id="navDefense">🛡️ 10초게임</button>
+            <button class="action-btn" id="navSettings">⚙️ 설정</button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon">🚀</div>
+            <div class="empty-title">새로운 도전을 시작해보세요!</div>
+            <div class="empty-desc">아직 설정된 목표가 없습니다.<br>금연이나 금주 도전을 시작하고<br>건강한 습관을 만들어보세요.</div>
+            <button class="action-btn" id="btnStartChallenge"
+                style="background: var(--smoke-main); color: white; padding: 16px 28px; font-size: 16px; font-weight: 800; border-radius: 16px; box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);">⚙️
+                목표 설정하기</button>
+        </div>
+
+        <div id="smokeSection" class="tab-content active">
+            <div class="card full-width smoke-card" id="smokeCard">
+                <div class="card-body">
+                    <div class="time-display" id="smokeTitle"><span class="fit-text">금연기간 : 00:00:00</span></div>
+
+                    <div id="smokeQuitBoard" class="premium-quit-board smoke"></div>
+                    <div id="smokeReduceBoard" class="premium-reduce-board"></div>
+
+                    <div id="smokeHealth" class="health-msg full-width">
+                        <div class="health-header">
+                            <div class="health-icon-wrapper" id="smokeHealthIcon">🌿</div>
+                            <div class="health-text-content">
+                                <div class="health-title-row">
+                                    <span class="health-label">금연 효과</span>
+                                    <span id="smokeHealthPercent" class="health-percent">0.0%</span>
+                                </div>
+                                <span id="smokeHealthText" class="health-current-msg">계산 중...</span>
+                            </div>
+                        </div>
+                        <div class="health-body">
+                            <div class="progress-bg">
+                                <div id="smokeHealthBar" class="progress-bar smoke"></div>
+                            </div>
+                            <div class="health-footer"><span id="smokeHealthNext" class="health-next-target">👉 다음: 계산
+                                    중...</span></div>
+                            <button class="roadmap-btn" id="btnRoadmapSmoke">🗺️ 전체 여정 도감 보기</button>
+                        </div>
+                    </div>
+
+                    <div class="ranking-badge full-width hide-on-reduce">
+                        <div class="title">🏆 명예의 전당 (최장 기록)</div>
+                        <div class="rank-item"><span class="rank-badge">🥇 1위</span> <span class="rank-date"
+                                id="smokeTop1Date">-</span> <span class="rank-val" id="smokeTop1Val">기록 없음</span></div>
+                        <div class="rank-item sub"><span class="rank-badge">🥈 2위</span> <span class="rank-date"
+                                id="smokeTop2Date">-</span> <span class="rank-val" id="smokeTop2Val">기록 없음</span></div>
+                        <div class="rank-item sub"><span class="rank-badge">🥉 3위</span> <span class="rank-date"
+                                id="smokeTop3Date">-</span> <span class="rank-val" id="smokeTop3Val">기록 없음</span></div>
+                        <div class="rank-item sub"><span class="rank-badge" style="color:var(--text-gray);">🏅 4위</span>
+                            <span class="rank-date" id="smokeTop4Date">-</span> <span class="rank-val"
+                                id="smokeTop4Val">기록 없음</span></div>
+                        <div class="rank-item sub"><span class="rank-badge" style="color:var(--text-gray);">🏅 5위</span>
+                            <span class="rank-date" id="smokeTop5Date">-</span> <span class="rank-val"
+                                id="smokeTop5Val">기록 없음</span></div>
+                    </div>
+
+                    <div class="chart-container full-width">
+                        <div class="chart-title"><span class="material-symbols-rounded">bar_chart</span>최근 30일 데이터 <span
+                                class="scroll-hint">◀ 옆으로 밀기</span></div>
+                        <div class="scroll-chart-wrapper" id="smokeChartWrapper">
+                            <div class="scroll-chart-inner"><canvas id="smokeChart"></canvas></div>
+                        </div>
+                    </div>
+
+                    <button class="button full-btn smoke-btn" id="btnRecordSmoke">방금 피웠음</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="drinkSection" class="tab-content">
+            <div class="card full-width drink-card" id="drinkCard">
+                <div class="card-body">
+                    <div class="time-display" id="drinkTitle"><span class="fit-text">금주기간 : 00:00:00</span></div>
+
+                    <div id="drinkQuitBoard" class="premium-quit-board drink"></div>
+                    <div id="drinkReduceBoard" class="premium-reduce-board drink"></div>
+
+                    <div id="drinkHealth" class="health-msg full-width">
+                        <div class="health-header">
+                            <div class="health-icon-wrapper" id="drinkHealthIcon">💧</div>
+                            <div class="health-text-content">
+                                <div class="health-title-row">
+                                    <span class="health-label">금주 효과</span>
+                                    <span id="drinkHealthPercent" class="health-percent">0.0%</span>
+                                </div>
+                                <span id="drinkHealthText" class="health-current-msg">계산 중...</span>
+                            </div>
+                        </div>
+                        <div class="health-body">
+                            <div class="progress-bg">
+                                <div id="drinkHealthBar" class="progress-bar drink"></div>
+                            </div>
+                            <div class="health-footer"><span id="drinkHealthNext" class="health-next-target">👉 다음: 계산
+                                    중...</span></div>
+                            <button class="roadmap-btn" id="btnRoadmapDrink">🗺️ 전체 여정 도감 보기</button>
+                        </div>
+                    </div>
+
+                    <div class="ranking-badge full-width hide-on-reduce">
+                        <div class="title">🏆 명예의 전당 (최장 기록)</div>
+                        <div class="rank-item"><span class="rank-badge">🥇 1위</span> <span class="rank-date"
+                                id="drinkTop1Date">-</span> <span class="rank-val" id="drinkTop1Val">기록 없음</span></div>
+                        <div class="rank-item sub"><span class="rank-badge">🥈 2위</span> <span class="rank-date"
+                                id="drinkTop2Date">-</span> <span class="rank-val" id="drinkTop2Val">기록 없음</span></div>
+                        <div class="rank-item sub"><span class="rank-badge">🥉 3위</span> <span class="rank-date"
+                                id="drinkTop3Date">-</span> <span class="rank-val" id="drinkTop3Val">기록 없음</span></div>
+                        <div class="rank-item sub"><span class="rank-badge" style="color:var(--text-gray);">🏅 4위</span>
+                            <span class="rank-date" id="drinkTop4Date">-</span> <span class="rank-val"
+                                id="drinkTop4Val">기록 없음</span></div>
+                        <div class="rank-item sub"><span class="rank-badge" style="color:var(--text-gray);">🏅 5위</span>
+                            <span class="rank-date" id="drinkTop5Date">-</span> <span class="rank-val"
+                                id="drinkTop5Val">기록 없음</span></div>
+                    </div>
+
+                    <div class="chart-container full-width">
+                        <div class="chart-title"><span class="material-symbols-rounded">calendar_month</span>월별 음주 기록
+                            <span class="scroll-hint">◀ 옆으로 밀기 (최근 6개월)</span></div>
+                        <div class="calendar-slider" id="drinkCalendarSlider"></div>
+                    </div>
+
+                    <button class="button full-btn drink-btn" id="btnRecordDrink">방금 마셨음 (하루 1회 제한)</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="customModal">
+        <div class="modal-box">
+            <div class="modal-msg" id="modalMsg">메시지</div>
+            <div class="modal-btn-group">
+                <button class="modal-btn btn-cancel" id="btnModalCancel">취소</button>
+                <button class="modal-btn btn-confirm" id="modalConfirmBtn">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="alertModal">
+        <div class="modal-box">
+            <div class="modal-msg" id="alertMsg">메시지</div>
+            <button class="modal-btn btn-confirm" id="btnAlertConfirm" style="width:100%; margin-top:10px;">확인</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-box settings-box">
+            <div class="modal-msg" style="margin-bottom: 20px; font-size: 20px;">⚙️ 앱 설정</div>
+
+            <div class="settings-group">
+                <div class="settings-title">🚬 담배 목표 설정</div>
+                <div class="segment-group">
+                    <input type="radio" name="setSmokeMode" id="sm_quit" value="quit"><label for="sm_quit">완전 금연</label>
+                    <input type="radio" name="setSmokeMode" id="sm_reduce" value="reduce"><label
+                        for="sm_reduce">줄이기</label>
+                    <input type="radio" name="setSmokeMode" id="sm_off" value="off"><label for="sm_off">끄기</label>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-row" id="wrapSmokePrice"><span>1갑 가격 (원)</span><input type="text"
+                            inputmode="numeric" id="setSmokePrice" class="comma-input" placeholder="4,500"></div>
+                    <div class="setting-row" id="wrapSmokeOriginal"><span>원래 하루 흡연량</span><input type="text"
+                            inputmode="numeric" id="setSmokePerDay" class="comma-input" placeholder="10"></div>
+                    <div class="setting-row" id="wrapSmokeTarget" style="display:none;"><span>목표 하루 흡연량</span><input
+                            type="text" inputmode="numeric" id="setSmokeTarget" class="comma-input" placeholder="5">
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-title">🍺 술 목표 설정</div>
+                <div class="segment-group">
+                    <input type="radio" name="setDrinkMode" id="dr_quit" value="quit"><label for="dr_quit">완전 금주</label>
+                    <input type="radio" name="setDrinkMode" id="dr_reduce" value="reduce"><label
+                        for="dr_reduce">줄이기</label>
+                    <input type="radio" name="setDrinkMode" id="dr_off" value="off"><label for="dr_off">끄기</label>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-row" id="wrapDrinkCost"><span>1회 평균 비용 (원)</span><input type="text"
+                            inputmode="numeric" id="setDrinkCost" class="comma-input" placeholder="50,000"></div>
+                    <div class="setting-row" id="wrapDrinkOriginal"><span>원래 1주 음주 (회)</span><input type="text"
+                            inputmode="numeric" id="setDrinkPerWeek" class="comma-input" placeholder="2"></div>
+                    <div class="setting-row" id="wrapDrinkTarget" style="display:none;"><span>목표 1주 음주 (회)</span><input
+                            type="text" inputmode="numeric" id="setDrinkTarget" class="comma-input" placeholder="1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-btn-group">
+                <button class="modal-btn btn-cancel" id="btnSettingsClose">취소</button>
+                <button class="modal-btn btn-confirm" id="btnSettingsSave">저장</button>
+            </div>
+
+            <details style="margin-top: 25px; font-size: 11px; color: var(--text-gray); text-align: center;">
+                <summary style="cursor: pointer; text-decoration: underline; margin-bottom: 10px;">사업자 정보 및 개인정보처리방침</summary>
+                <div style="line-height: 1.6; background-color: #1F2937; padding: 12px; border-radius: 8px; text-align: left; display: inline-block; border: 1px solid #374151;">
+                    상호: 케이지에스 랩(KGS Lab)<br>
+                    대표: 김래오<br>
+                    사업자등록번호: 602-18-52880<br>
+                    이메일: <a href="mailto:KGSLab.2026@gmail.com" style="color: #9CA3AF; text-decoration: none;">KGSLab.2026@gmail.com</a><br><br>
+                    <a href="https://wowleo74.github.io/NoC-NoA/privacy.html" target="_blank" style="color: #10B981; text-decoration: underline; font-weight: bold;">개인정보처리방침 전문 보기</a>
+                </div>
+            </details>
+
+            <div class="share-zone">
+                <button class="share-btn" id="btnShareApp">💌 친구에게 앱 추천하기</button>
+            </div>
+
+            <div class="reset-zone">
+                <div class="settings-title" style="color: var(--status-fail);">🚨 데이터 관리 구역</div>
+                <button class="reset-btn" id="btnResetSmoke"><span
+                        class="material-symbols-rounded">delete_forever</span>담배 기록 전체 초기화</button>
+                <button class="reset-btn" id="btnResetDrink"><span
+                        class="material-symbols-rounded">delete_forever</span>술 기록 전체 초기화</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="roadmapModal">
+        <div class="modal-box" style="width: 90%; max-width: 380px;">
+            <div class="modal-msg" id="roadmapTitle" style="margin-bottom: 5px; font-size: 20px;">🌿 회복 도감</div>
+            <div style="font-size: 13px; color: var(--text-gray); font-weight: 700; margin-bottom: 15px;">앞으로 다가올 내 몸의
+                기적같은 변화들</div>
+            <div class="roadmap-list" id="roadmapList"></div>
+            <button class="button reset-btn roadmap-close-btn" id="btnRoadmapClose"
+                style="width: 100%; margin-top: 10px; background: transparent; color: var(--text-sub);">닫기</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="defenseModal">
+        <div class="modal-box" style="width: 90%; max-width: 360px; padding: 40px 25px;">
+            <div style="font-size: 24px; font-weight: 800; margin-bottom: 5px; color: var(--text-main);">🛡️ 극강의 10.00초
+            </div>
+            <div id="defenseStepText"
+                style="font-size: 15px; font-weight: 800; color: var(--status-success); margin-bottom: 10px;">1단계: 눈으로
+                보고 누르기</div>
+            <div
+                style="font-size: 13px; font-weight: 600; color: var(--text-sub); line-height: 1.5; margin-bottom: 20px;">
+                <span style="color:var(--status-fail);">정확히 10.00초</span>에 맞춰 멈추세요.<br>단 0.01초의 오차도 허용되지 않습니다.
+            </div>
+            <div id="gameTimer">0.00</div>
+            <div id="gameResult"
+                style="min-height: 48px; font-size: 15px; font-weight: 800; margin-bottom: 25px; color: var(--text-streak); line-height: 1.4; display: flex; align-items: center; justify-content: center;">
+            </div>
+            <button class="game-main-btn" id="gameMainBtn">🔥 10초 버티기 시작</button>
+            <button class="button reset-btn roadmap-close-btn" id="btnDefenseClose"
+                style="width: 100%; margin-top: 15px; background: transparent; color: var(--text-sub);">종료하고
+                돌아가기</button>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        // 💡 화면 방향 잠금 (PWA 설치 시 보조 수단)
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('portrait').catch(() => {});
+        }
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('서비스 워커 등록 성공! 오프라인 캐싱이 활성화되었습니다:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('서비스 워커 등록 실패:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+
+</html>
