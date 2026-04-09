@@ -1,15 +1,12 @@
 {
-    "name": "신체 나이 측정기",
-    "short_name": "Body Age",
-    "description": "6가지 지표로 신체 나이를 측정하는 앱",
-    "lang": "ko",
-    "start_url": "/body-age/",
-    "scope": "/body-age/",
+    "id": "/NoC-NoA/",
+    "name": "노담노술 - 금연·금주 도전기",
+    "short_name": "노담노술",
+    "start_url": "https://kgslab2026.github.io/NoC-NoA/",
     "display": "standalone",
     "orientation": "portrait",
-    "background_color": "#04060f",
-    "theme_color": "#7c3aed",
-    "categories": ["health", "lifestyle"],
+    "background_color": "#0B0F14",
+    "theme_color": "#0B0F14",
     "icons": [
         {
             "src": "icon-192.png",
@@ -18,16 +15,16 @@
             "purpose": "any"
         },
         {
-            "src": "icon-maskable-512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable"
-        },
-        {
             "src": "icon.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
+        },
+        {
+            "src": "icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
         }
     ]
 }
