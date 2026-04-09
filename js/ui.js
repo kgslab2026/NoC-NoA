@@ -128,8 +128,8 @@ const UI = {
 
             let sStart = Data.getStartTime('smoke');
             let streakDays = Math.max(0, (now - sStart) / (1000 * 60 * 60 * 24));
-            let cigPrice = Data.getSetting("smokePrice", 4500) / 20;
-            let smokePerDay = Data.getSetting("smokePerDay", 10);
+            let cigPrice = (Data.getSetting("smokePrice") ?? 0) / 20;
+            let smokePerDay = Data.getSetting("smokePerDay") ?? 0;
             let currentSaved = Math.floor(streakDays * smokePerDay * cigPrice);
 
             let appStart = Data.getAppStartTime('smoke');
@@ -170,7 +170,7 @@ const UI = {
             smokeReduceBoard.style.display = 'block';
 
             let stat = Data.getReduceStatus('smoke');
-            let target = Data.getSetting("smokeTarget", 5);
+            let target = Data.getSetting("smokeTarget") ?? 0;
             let remaining = stat.remaining;
             let isFail = stat.isFail;
             let used = target - remaining;
@@ -234,8 +234,8 @@ const UI = {
 
             let dStart = Data.getStartTime('drink');
             let streakWeeks = Math.max(0, (now - dStart) / (1000 * 60 * 60 * 24 * 7));
-            let drinkCost = Data.getSetting("drinkCost", 50000);
-            let drinkPerWeek = Data.getSetting("drinkPerWeek", 2);
+            let drinkCost = Data.getSetting("drinkCost") ?? 0;
+            let drinkPerWeek = Data.getSetting("drinkPerWeek") ?? 0;
             let currentSaved = Math.floor(streakWeeks * drinkPerWeek * drinkCost);
 
             let appStart = Data.getAppStartTime('drink');
@@ -278,7 +278,7 @@ const UI = {
             drinkReduceBoard.style.display = 'block';
 
             let stat = Data.getReduceStatus('drink');
-            let target = Data.getSetting("drinkTarget", 1);
+            let target = Data.getSetting("drinkTarget") ?? 0;
             let remaining = stat.remaining;
             let isFail = stat.isFail;
             let used = target - remaining;
@@ -661,12 +661,13 @@ const UI = {
         let setDrinkPerWeek = document.getElementById('setDrinkPerWeek');
         let setDrinkTarget = document.getElementById('setDrinkTarget');
 
-        if (setSmokePrice) setSmokePrice.value = Data.getSetting('smokePrice', 4500).toLocaleString();
-        if (setSmokePerDay) setSmokePerDay.value = Data.getSetting('smokePerDay', 10).toLocaleString();
-        if (setSmokeTarget) setSmokeTarget.value = Data.getSetting('smokeTarget', 5).toLocaleString();
-        if (setDrinkCost) setDrinkCost.value = Data.getSetting('drinkCost', 50000).toLocaleString();
-        if (setDrinkPerWeek) setDrinkPerWeek.value = Data.getSetting('drinkPerWeek', 2).toLocaleString();
-        if (setDrinkTarget) setDrinkTarget.value = Data.getSetting('drinkTarget', 1).toLocaleString();
+        const fmtSetting = (key) => { const v = Data.getSetting(key); return v != null ? v.toLocaleString() : ''; };
+        if (setSmokePrice) setSmokePrice.value = fmtSetting('smokePrice');
+        if (setSmokePerDay) setSmokePerDay.value = fmtSetting('smokePerDay');
+        if (setSmokeTarget) setSmokeTarget.value = fmtSetting('smokeTarget');
+        if (setDrinkCost) setDrinkCost.value = fmtSetting('drinkCost');
+        if (setDrinkPerWeek) setDrinkPerWeek.value = fmtSetting('drinkPerWeek');
+        if (setDrinkTarget) setDrinkTarget.value = fmtSetting('drinkTarget');
 
         let smokeModeRadio = document.getElementById(`sm_${Data.getMode('smoke')}`);
         let drinkModeRadio = document.getElementById(`dr_${Data.getMode('drink')}`);

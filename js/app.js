@@ -46,8 +46,8 @@ const App = {
         Data.init();
         this.bindEvents();
         UI.updateAll();
-        
-        setTimeout(fitTextToContainer, 50); 
+
+        setTimeout(fitTextToContainer, 50);
 
         setInterval(() => {
             try {
@@ -196,7 +196,7 @@ const App = {
                 let shareData = {
                     title: '노담노술 - 금연·금주 도전기',
                     text: '완벽한 금연, 금주를 위한 타이머와 회복 도감! 같이 시작해볼래?',
-                    url: 'https://wowleo74.github.io/NoC-NoA/'
+                    url: 'https://kgslab2026.github.io/NoC-NoA/'
                 };
 
                 if (navigator.share) {
@@ -255,7 +255,7 @@ const App = {
 
         UI.closeModal('settingsModal');
         UI.updateAll();
-        
+
         setTimeout(fitTextToContainer, 50);
     },
 

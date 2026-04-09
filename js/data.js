@@ -88,12 +88,6 @@ const Data = {
             if (!localStorage.getItem(key + "Records")) localStorage.setItem(key + "Records", "[]");
         });
 
-        if (!localStorage.getItem("smokePrice")) localStorage.setItem("smokePrice", "4500");
-        if (!localStorage.getItem("drinkCost")) localStorage.setItem("drinkCost", "50000");
-        if (!localStorage.getItem("smokePerDay")) localStorage.setItem("smokePerDay", "10");
-        if (!localStorage.getItem("smokeTarget")) localStorage.setItem("smokeTarget", "5");
-        if (!localStorage.getItem("drinkPerWeek")) localStorage.setItem("drinkPerWeek", "2");
-        if (!localStorage.getItem("drinkTarget")) localStorage.setItem("drinkTarget", "1");
 
         if (!localStorage.getItem("smokeMode")) localStorage.setItem("smokeMode", "off");
         if (!localStorage.getItem("drinkMode")) localStorage.setItem("drinkMode", "off");
@@ -182,7 +176,7 @@ const Data = {
         if (type === 'smoke') {
             let startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
             let countToday = logs.filter(t => t >= startOfDay).length;
-            let target = this.getSetting("smokeTarget", 5);
+            let target = this.getSetting("smokeTarget") ?? 0;
             return {
                 count: countToday,
                 remaining: target - countToday,
@@ -195,7 +189,7 @@ const Data = {
             startOfWeek.setHours(0, 0, 0, 0);
 
             let countWeek = logs.filter(t => t >= startOfWeek.getTime()).length;
-            let target = this.getSetting("drinkTarget", 1);
+            let target = this.getSetting("drinkTarget") ?? 0;
             return {
                 count: countWeek,
                 remaining: target - countWeek,
