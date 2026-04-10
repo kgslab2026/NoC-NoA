@@ -1,6 +1,6 @@
 // 💡 1. 캐시 버전 관리: v3에서 v5로 올렸습니다. 
 // 이렇게 숫자를 바꿔줘야 폰이 새로운 index.html과 style.css를 다시 받아갑니다!
-const CACHE_NAME = 'nocnoa-cache-v5';
+const CACHE_NAME = 'nocnoa-cache-v6';
 
 // 미리 저장해둘 핵심 파일 (정적 파일)
 const urlsToCache = [
@@ -9,7 +9,10 @@ const urlsToCache = [
   './css/style.css',
   './js/data.js',
   './js/ui.js',
-  './js/app.js'
+  './js/app.js',
+  './icon-192.png',
+  './icon.png',
+  './icon-maskable-512.png'
 ];
 
 // 💡 2. 설치(Install) 및 skipWaiting 적용

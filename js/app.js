@@ -270,6 +270,7 @@ const App = {
 
     gameTimerId: null,
     gameStartTime: 0,
+    gameStage: 1,
 
     bindGameEvents() {
         let navDefense = document.getElementById('navDefense');
@@ -289,8 +290,13 @@ const App = {
     },
 
     openDefenseGame() {
+        this.gameStage = 1;
+
         document.getElementById('gameTimer').innerText = "0.00";
         document.getElementById('gameResult').innerText = "";
+
+        let stepText = document.getElementById('defenseStepText');
+        if (stepText) stepText.innerText = "1단계: 눈으로 보고 누르기";
 
         let btn = document.getElementById('gameMainBtn');
         if (btn) {
@@ -306,6 +312,7 @@ const App = {
         cancelAnimationFrame(this.gameTimerId);
         State.isGameRunning = false;
         this.gameStartTime = 0;
+        this.gameStage = 1;
 
         let timer = document.getElementById('gameTimer');
         if (timer) timer.innerText = "0.00";
@@ -331,23 +338,43 @@ const App = {
             cancelAnimationFrame(this.gameTimerId);
 
             let finalTime = ((performance.now() - this.gameStartTime) / 1000).toFixed(2);
-            document.getElementById('gameTimer').innerText = finalTime;
+            let timer = document.getElementById('gameTimer');
+            if (timer) timer.innerText = finalTime;
 
-            btn.innerText = "🔄 다시 도전";
             btn.classList.remove('stop');
 
             let result = document.getElementById('gameResult');
-            if (result) {
-                result.innerText = finalTime === "10.00" ? "🎉 완벽합니다!" : `😢 실패! (${finalTime}초)`;
+            let stepText = document.getElementById('defenseStepText');
+
+            if (finalTime === "10.00") {
+                if (this.gameStage === 1) {
+                    this.gameStage = 2;
+                    if (stepText) stepText.innerText = "2단계: 7초부터 숫자가 사라져요";
+                    if (result) result.innerText = "🎉 1단계 성공! 2단계에 도전하세요!";
+                    btn.innerText = "🔥 2단계 시작";
+                } else {
+                    if (result) result.innerText = "🏆 완벽합니다! 극강의 10초 달성!";
+                    btn.innerText = "🔄 처음부터 다시";
+                    this.gameStage = 1;
+                    if (stepText) stepText.innerText = "1단계: 눈으로 보고 누르기";
+                }
+            } else {
+                if (result) result.innerText = `😢 실패! (${finalTime}초)`;
+                btn.innerText = "🔄 다시 도전";
             }
         }
     },
 
     updateGame() {
         if (!State.isGameRunning) return;
+        let elapsed = (performance.now() - this.gameStartTime) / 1000;
         let timer = document.getElementById('gameTimer');
         if (timer) {
-            timer.innerText = ((performance.now() - this.gameStartTime) / 1000).toFixed(2);
+            if (this.gameStage === 2 && elapsed >= 7) {
+                timer.innerText = "?";
+            } else {
+                timer.innerText = elapsed.toFixed(2);
+            }
         }
         this.gameTimerId = requestAnimationFrame(() => this.updateGame());
     }

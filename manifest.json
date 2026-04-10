@@ -1,6 +1,9 @@
 {
     "id": "/NoC-NoA/",
     "name": "노담노술 - 금연·금주 도전기",
+    "description": "완전히 끊거나, 조금씩 줄이거나. 금연·금주 도전을 나만의 방식으로 시작하세요.",
+    "lang": "ko",
+    "categories": ["health", "lifestyle"],
     "short_name": "노담노술",
     "start_url": "https://kgslab2026.github.io/NoC-NoA/",
     "display": "standalone",
