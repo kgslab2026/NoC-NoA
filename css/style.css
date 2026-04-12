@@ -139,10 +139,9 @@ body {
     transform: translateY(1px) scale(0.98);
 }
 
-/* 💡 스크롤 시 광고 배너에 가려지지 않도록 하단 여백(padding-bottom) 90px 적용 */
 .container {
     margin: 0 auto;
-    padding: 15px 0 90px 0 !important;
+    padding: 4px 0 20px 0 !important;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -228,7 +227,7 @@ body {
 
 
 .card-body {
-    padding: 30px 20px;
+    padding: 8px 20px 30px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -803,11 +802,10 @@ body {
 }
 
 .segment-group input[type="radio"]:checked+label {
-    background: var(--card-bg);
-    color: var(--text-main);
-    box-shadow: var(--shadow-sm);
+    background: var(--smoke-main);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
     font-weight: 800;
-    transform: scale(1.03);
 }
 
 .settings-list {
