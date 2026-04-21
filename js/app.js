@@ -196,7 +196,7 @@ const App = {
                 let shareData = {
                     title: '노담노술 - 금연·금주 도전기',
                     text: '완벽한 금연, 금주를 위한 타이머와 회복 도감! 같이 시작해볼래?',
-                    url: 'https://kgslab2026.github.io/NoC-NoA/'
+                    url: 'https://play.google.com/store/apps/details?id=com.kgslab2026.ncna'
                 };
 
                 if (navigator.share) {
